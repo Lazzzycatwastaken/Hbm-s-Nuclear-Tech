@@ -61,6 +61,12 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 3 * 4;
 		}});
 
+		NBTStructure.registerStructure(0, new SpawnCondition() {{
+			canSpawn = biome -> !biome.canSpawnLightningBolt() && biome.temperature >= 2F;
+			structure = new JigsawPiece("house", StructureManager.house);
+			spawnWeight = 3 * 4;
+		}});
+
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
 			put(ModBlocks.meteor_brick, new MeteorBricks());
 		}};
