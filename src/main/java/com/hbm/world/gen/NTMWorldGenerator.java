@@ -36,6 +36,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 
 	public NTMWorldGenerator() {
 		final List<BiomeGenBase> invalidBiomes = Arrays.asList(new BiomeGenBase[] {BiomeGenBase.ocean, BiomeGenBase.river, BiomeGenBase.frozenOcean, BiomeGenBase.frozenRiver, BiomeGenBase.deepOcean});
+		final List<BiomeGenBase> oceanBiomes = Arrays.asList(new BiomeGenBase[] { BiomeGenBase.ocean, BiomeGenBase.deepOcean });
 
 		NBTStructure.registerStructure(0, new SpawnCondition() {{
 			canSpawn = biome -> !invalidBiomes.contains(biome);
@@ -62,9 +63,10 @@ public class NTMWorldGenerator implements IWorldGenerator {
 		}});
 
 		NBTStructure.registerStructure(0, new SpawnCondition() {{
-			canSpawn = biome -> !biome.canSpawnLightningBolt() && biome.temperature >= 2F;
-			structure = new JigsawPiece("house", StructureManager.house);
-			spawnWeight = 3 * 4;
+			canSpawn = oceanBiomes::contains;
+			structure = new JigsawPiece("aircraft", StructureManager.aircraft);
+			maxHeight = 46;
+			spawnWeight = 75 * 5;
 		}});
 
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
