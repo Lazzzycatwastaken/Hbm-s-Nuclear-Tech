@@ -1,5 +1,6 @@
 package com.hbm.items.machine;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiFunction;
@@ -56,9 +57,13 @@ public class ItemRBMKRod extends Item {
 	 *  i drew a fuel rod yay
 	 */
 
+	public static List<ItemRBMKRod> craftableRods = new ArrayList<>();
+
 	public ItemRBMKRod(ItemRBMKPellet pellet) {
 		this(pellet.fullName);
 		this.pellet = pellet;
+
+		craftableRods.add(this);
 	}
 
 	public ItemRBMKRod(String fullName) {
@@ -281,7 +286,7 @@ public class ItemRBMKRod extends Item {
 			break;
 		case LOG_TEN: function = "log10(%1$s + 1) * 0.5 * %2$s";
 			break;
-		case PLATEU: function = "(1 - e^(-%1$s / 25)) * %2$s";
+		case PLATEU: function = "(1 - e^-%1$s / 25)) * %2$s";
 			break;
 		case ARCH: function = "(%1$s - %1$s² / 10000) / 100 * %2$s [0;∞]";
 			break;
@@ -420,6 +425,10 @@ public class ItemRBMKRod extends Item {
 
 		if(this == ModItems.rbmk_fuel_drx) {
 
+			if(ItemRBMKRod.getHullHeat(stack) >= 50 && ItemRBMKRod.getCoreHeat(stack) >= 50) {
+				list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.wasteCooling"));
+			}
+
 			if(selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
 				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmx.source"));
 			}
@@ -439,6 +448,10 @@ public class ItemRBMKRod extends Item {
 			list.add(EnumChatFormatting.DARK_RED + I18nUtil.resolveKey("trait.rbmx.melt", meltingPoint + "m"));
 
 		} else {
+
+			if(ItemRBMKRod.getHullHeat(stack) >= 50 && ItemRBMKRod.getCoreHeat(stack) >= 50) {
+				list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("desc.item.wasteCooling"));
+			}
 
 			if(selfRate > 0 || this.function == EnumBurnFunc.SIGMOID) {
 				list.add(EnumChatFormatting.RED + I18nUtil.resolveKey("trait.rbmk.source"));
