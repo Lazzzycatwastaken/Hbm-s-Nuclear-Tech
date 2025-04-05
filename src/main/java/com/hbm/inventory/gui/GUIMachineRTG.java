@@ -25,7 +25,7 @@ public class GUIMachineRTG extends GuiInfoContainer {
 		rtg = tedf;
 
 		this.xSize = 176;
-		this.ySize = 188;
+		this.ySize = 187;
 	}
 
 	@Override
