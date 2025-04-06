@@ -32,9 +32,9 @@ public class GUIMachineRTG extends GuiInfoContainer {
 	public void drawScreen(int mouseX, int mouseY, float f) {
 		super.drawScreen(mouseX, mouseY, f);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 146, guiTop + 9, 16, 51, rtg.power, rtg.powerMax);
+		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 145, guiTop + 10, 16, 51, rtg.power, rtg.powerMax);
 		String[] heatText = I18nUtil.resolveKeyArray("desc.gui.rtg.heat", rtg.heat);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 124, guiTop + 9, 16, 51, mouseX, mouseY, heatText);
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 123, guiTop + 10, 16, 51, mouseX, mouseY, heatText);
 
 		List<ItemRTGPellet> pellets = ItemRTGPellet.pelletList;
 		String[] pelletText = new String[pellets.size() + 1];
@@ -45,7 +45,7 @@ public class GUIMachineRTG extends GuiInfoContainer {
 			pelletText[i + 1] = I18nUtil.resolveKey("desc.gui.rtg.pelletPower", I18nUtil.resolveKey(pellet.getUnlocalizedName() + ".name"), pellet.getHeat() * 5);
 		}
 
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 12, guiTop + 25, 16, 16, guiLeft - 8, guiTop + 36 + 16, pelletText);
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 8, guiTop + 25, 16, 16, guiLeft - 8, guiTop + 36 + 16, pelletText);
 	}
 
 	@Override
@@ -63,15 +63,15 @@ public class GUIMachineRTG extends GuiInfoContainer {
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if (rtg.hasHeat()) {
-			int i = rtg.getHeatScaled(51); // was 50
-			drawTexturedModalRect(guiLeft + 124, guiTop + 61 - i, 176, 10 + (51 - i), 16, i);
+			int i = rtg.getHeatScaled(51);
+			drawTexturedModalRect(guiLeft + 123, guiTop + 62 - i, 176, 10 + (51 - i), 16, i);
 		}
 
 		if (rtg.hasPower()) {
-			int i = (int) rtg.getPowerScaled(51); // was 50
-			drawTexturedModalRect(guiLeft + 146, guiTop + 61 - i, 192, 10 + (51 - i), 16, i);
+			int i = (int) rtg.getPowerScaled(51);
+			drawTexturedModalRect(guiLeft + 145, guiTop + 62 - i, 192, 10 + (51 - i), 16, i);
 		}
 
-		this.drawInfoPanel(guiLeft - 12, guiTop + 25, 16, 16, 2);
+		this.drawInfoPanel(guiLeft - 8, guiTop + 25, 16, 16, 2);
 	}
 }
