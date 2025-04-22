@@ -12,41 +12,34 @@ import net.minecraft.item.ItemStack;
 public class ContainerMachineSchrabidiumTransmutator extends Container {
 
 private TileEntityMachineSchrabidiumTransmutator nukeBoy;
-	
 	public ContainerMachineSchrabidiumTransmutator(InventoryPlayer invPlayer, TileEntityMachineSchrabidiumTransmutator tedf) {
-		
 		nukeBoy = tedf;
 
 		this.addSlotToContainer(new Slot(tedf, 0, 44, 63));
 		this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 1, 134, 63));
 		this.addSlotToContainer(new Slot(tedf, 2, 26, 18));
 		this.addSlotToContainer(new Slot(tedf, 3, 8, 108));
-		
 		for(int i = 0; i < 3; i++)
 		{
 			for(int j = 0; j < 9; j++)
 			{
-				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56));
+				this.addSlotToContainer(new Slot(invPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18 + 56 + 15));
 			}
 		}
-		
 		for(int i = 0; i < 9; i++)
 		{
-			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56));
+			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142 + 56 + 15));
 		}
 	}
-	
 	@Override
     public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
     {
 		ItemStack var3 = null;
 		Slot var4 = (Slot) this.inventorySlots.get(par2);
-		
 		if (var4 != null && var4.getHasStack())
 		{
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
-			
             if (par2 <= 3) {
 				if (!this.mergeItemStack(var5, 4, this.inventorySlots.size(), true))
 				{
@@ -59,7 +52,6 @@ private TileEntityMachineSchrabidiumTransmutator nukeBoy;
 					if (!this.mergeItemStack(var5, 2, 3, false))
 						return null;
 			}
-			
 			if (var5.stackSize == 0)
 			{
 				var4.putStack((ItemStack) null);
@@ -69,7 +61,6 @@ private TileEntityMachineSchrabidiumTransmutator nukeBoy;
 				var4.onSlotChanged();
 			}
 		}
-		
 		return var3;
     }
 
@@ -77,7 +68,6 @@ private TileEntityMachineSchrabidiumTransmutator nukeBoy;
 	public boolean canInteractWith(EntityPlayer player) {
 		return nukeBoy.isUseableByPlayer(player);
 	}
-	
 	@Override
 	public void updateProgressBar(int i, int j) {
 		if(i == 1)
