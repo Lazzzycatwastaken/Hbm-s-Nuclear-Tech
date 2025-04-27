@@ -357,13 +357,15 @@ public class ModEventHandler {
 
 		Map<Integer, List<WeightedRandomObject>> slotPools = new HashMap<>();
 
+		float soot = PollutionHandler.getPollution(entity.worldObj, MathHelper.floor_double(event.x), MathHelper.floor_double(event.y), MathHelper.floor_double(event.z), PollutionType.SOOT); //uhfgfg
+
 		if (entity instanceof EntityZombie) {
-			if (world.rand.nextFloat() < 0.005F) { // full hazmat zombine
+			if (world.rand.nextFloat() < 0.005F && soot > 2) { // full hazmat zombine
 				equipFullSet(entity, ModItems.hazmat_helmet, ModItems.hazmat_plate, ModItems.hazmat_legs, ModItems.hazmat_boots);
 				return;
 			}
 
-			if (world.rand.nextFloat() < 0.005F) { // full security zombine
+			if (world.rand.nextFloat() < 0.005F && soot > 20) { // full security zombine
 				equipFullSet(entity, ModItems.security_helmet, ModItems.security_plate, ModItems.security_legs, ModItems.security_boots);
 				return;
 			}
@@ -394,8 +396,6 @@ public class ModEventHandler {
 				{ModItems.wrench, 20}, {ModItems.cobalt_decorated_sword, 2}, {ModItems.detonator_de, 1}
 			}));
 		} else if (entity instanceof EntitySkeleton) {
-			float soot = PollutionHandler.getPollution(entity.worldObj,
-				MathHelper.floor_double(event.x), MathHelper.floor_double(event.y), MathHelper.floor_double(event.z), PollutionType.SOOT); //uhfgfg
 
 			slotPools.put(4, createSlotPool(12000, new Object[][]{
 				{ModItems.gas_mask_m65, 16}, {ModItems.gas_mask_olde, 12}, {ModItems.mask_of_infamy, 8},
