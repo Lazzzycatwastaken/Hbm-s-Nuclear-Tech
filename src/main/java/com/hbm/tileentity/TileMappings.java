@@ -62,7 +62,6 @@ public class TileMappings {
 		put(TileEntityMachineUF6Tank.class, "tileentity_uf6_tank");
 		put(TileEntityMachinePuF6Tank.class, "tileentity_puf6_tank");
 		put(TileEntityMachineReactorBreeding.class, "tileentity_reactor");
-		put(TileEntityNukeFurnace.class, "tileentity_nukefurnace");
 		put(TileEntityRtgFurnace.class, "tileentity_rtgfurnace");
 		put(TileEntityMachineElectricFurnace.class, "tileentity_electric_furnace");
 		put(TileEntityDecoTapeRecorder.class, "tileentity_taperecorder");
@@ -330,6 +329,7 @@ public class TileMappings {
 		put(TileEntityDeuteriumTower.class, "tileentity_deuterium_tower");
 		put(TileEntityMachineLiquefactor.class, "tileentity_liquefactor");
 		put(TileEntityMachineSolidifier.class, "tileentity_solidifier");
+		put(TileEntityMachineIntake.class, "tileentity_intake");
 		put(TileEntityMachineCompressor.class, "tileentity_compressor");
 		put(TileEntityMachineCompressorCompact.class, "tileentity_compressor_compact");
 		put(TileEntityElectrolyser.class, "tileentity_electrolyser");
@@ -428,6 +428,8 @@ public class TileMappings {
 		put(TileEntityRadioTorchReceiver.class, "tileentity_rtty_rec");
 		put(TileEntityRadioTorchCounter.class, "tileentity_rtty_counter");
 		put(TileEntityRadioTorchLogic.class, "tileentity_rtty_logic");
+		put(TileEntityRadioTorchReader.class, "tileentity_rtty_reader");
+		put(TileEntityRadioTorchController.class, "tileentity_rtty_controller");
 		put(TileEntityRadioTelex.class, "tileentity_rtty_telex");
 
 		put(TileEntityDroneWaypoint.class, "tileentity_drone_waypoint");
