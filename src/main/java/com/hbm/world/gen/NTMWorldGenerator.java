@@ -61,7 +61,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 
 		NBTStructure.registerStructure(0, new SpawnCondition() {{
 			canSpawn = biome -> !biome.canSpawnLightningBolt() && biome.temperature >= 2F;
-			structure = new JigsawPiece("vertibird", StructureManager.vertibird, -3);
+				structure = new JigsawPiece("vertibird", StructureManager.vertibird, -3);
 			spawnWeight = 3 * 4;
 		}});
 
@@ -102,7 +102,6 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 8;
 		}});
 
-		NBTStructure.registerNullWeight(0, 2, oceanBiomes::contains); //why the fuck did this change
 
 		NBTStructure.registerStructure(0, new SpawnCondition() {{
 			canSpawn = biome -> biome == BiomeGenBase.plains;
@@ -112,8 +111,25 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 1;
 		}});
 
-		NBTStructure.registerNullWeight(0, 2, biome -> biome == BiomeGenBase.plains);
-		NBTStructure.registerNullWeight(0, 2, oceanBiomes::contains);
+		NBTStructure.registerStructure(0, new SpawnCondition() {{
+			canSpawn = biome -> biome == BiomeGenBase.desert;
+			structure = new JigsawPiece("desert_shack_1", StructureManager.desert_shack_1, -7);
+			spawnWeight = 20;
+		}});
+
+		NBTStructure.registerStructure(0, new SpawnCondition() {{
+			canSpawn = biome -> biome == BiomeGenBase.desert;
+			structure = new JigsawPiece("desert_shack_2", StructureManager.desert_shack_2, -7);
+			spawnWeight = 25;
+		}});
+
+		NBTStructure.registerStructure(0, new SpawnCondition() {{
+			canSpawn = biome -> biome == BiomeGenBase.desert;
+			structure = new JigsawPiece("desert_shack_3", StructureManager.desert_shack_3, -5);
+			spawnWeight = 30;
+		}});
+
+		NBTStructure.registerNullWeight(0, 4, oceanBiomes::contains);
 
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
 			put(ModBlocks.meteor_brick, new MeteorBricks());
