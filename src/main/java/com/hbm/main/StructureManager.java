@@ -77,8 +77,9 @@ public class StructureManager {
 	public static final NBTStructure rack_small_6 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_6.nbt"));
 	public static final NBTStructure rack_small_7 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_7.nbt"));
 	public static final NBTStructure hallway = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/hallway.nbt"));
+	public static final NBTStructure hallway_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/hallway_2.nbt"));
 	public static final NBTStructure hallway_storage = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/hallway_storage.nbt"));
-
+	public static final NBTStructure industrial_boiler_room = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/industrial_boiler_room.nbt"));
 
 	public static final NBTStructure vertibird = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/vertibird.nbt"));
 	public static final NBTStructure crashed_vertibird = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/crashed-vertibird.nbt"));

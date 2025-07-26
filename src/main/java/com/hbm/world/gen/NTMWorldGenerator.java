@@ -102,7 +102,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 8;
 		}});
 
-		NBTStructure.registerNullWeight(0, 2, oceanBiomes::contains); //why the fuck did this change
+		NBTStructure.registerNullWeight(0, 4, oceanBiomes::contains); //why the fuck did this change
 
 		NBTStructure.registerStructure(0, new SpawnCondition() {{
 			canSpawn = biome -> biome == BiomeGenBase.plains;
@@ -113,7 +113,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 		}});
 
 		NBTStructure.registerStructure(0, new SpawnCondition() {{
-			sizeLimit = 128;
+			sizeLimit = 200;
 			spawnWeight = 100;
 			canSpawn = biome -> !invalidBiomes.contains(biome);
 			startPool = "start";
@@ -159,12 +159,15 @@ public class NTMWorldGenerator implements IWorldGenerator {
 				put("hallway", new JigsawPool() {{
 					add(new JigsawPiece("hallway", StructureManager.hallway), 1);
 					add(new JigsawPiece("hallway_storage", StructureManager.hallway_storage), 1);
+					add(new JigsawPiece("hallway_2", StructureManager.hallway_2), 1);
+					fallback = "hallway_rooms";
+				}});
+				put("hallway_rooms", new JigsawPool() {{
+					add(new JigsawPiece("industrial_boiler_room", StructureManager.industrial_boiler_room), 1);
 				}});
 			}};
 		}});
 
-		NBTStructure.registerNullWeight(0, 2, biome -> biome == BiomeGenBase.plains);
-		NBTStructure.registerNullWeight(0, 2, oceanBiomes::contains);
 
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
 			put(ModBlocks.meteor_brick, new MeteorBricks());
