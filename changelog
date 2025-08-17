@@ -1,40 +1,17 @@
-## Added
-* Lightstone
-  * Stylish stone variant that can be crafted from regular stone and limestone powder
-* Added a few new structures
-  * Aircraft carriers, beached boats and oil rigs
-  * Aircraft carriers can spawn naval mines, which behave like landmines
-* New weapon mods
-  * The laser rifle now has a shotgun barrel, extended capacitor and automatic receiver
-
 ## Changed
-* .75 bolts now work as advertised
-* Updated lead pipe texture
-* Removed recipes from a few ancient melee weapons, as well as the creative tab listing
-* Removed flat magnets
-* Taint should now also affect non-solid blocks that are full cubes
-* Reduced the AoE size of 7.62mm, .50 BMG and 10 gauge explosive projectiles
-* Removed the old gun mechanism items, turrets now use the new cast parts
-* A secret weapon and its variant have become craftable
-* NEI now shows RBMK fuel rod recycling and cooling
-* Removed most of the old unused siege mobs
-* Two weapons with built-in scopes now use the scope item in the crafting recipe
-* Updated the FLEIJA model
-* Cokers can now have their stats read with OC
-* NEI now shows recycling for RBMK fuel rods, and cooling for rods that can't be recycled due to being too hot
-* Taint can now replace any block, not just full cubes
-* Placing conveyor belts now creates a draggable ghost that will automatically attempt to pathfind towards the destination
-  * Lifts and chutes are placed automatically, meaning they no longer need crafting recipes
-* Changed the optimized receiver generic gun mod to +15% damage
+* QMAW now has buttons for returning to previously viewed pages
+* QMAW file detection now includes subfolders to `manual`
+* OpenComputers integration for the ZIRNOX should now return values in °C and bar instead of unexplained weird internal units
+* The sodium and strontium autogen ingots now have their correct hazard tags
+* Pattern matchers, like the one used on the automatic crafting table, no longer care about NBT data of an item
+  * This means that RBMK fuel rods can now be automatically disassembled without the depletion number having to be a 100% match
+  * Due to the way the RBMK uncrafting handler works, a single autocrafter now correctly supports RBMK fuel of one type of any depletion level, yielding the correct recycling pellets
 
 ## Fixed
-* Fixed taint destroying bedrock
-* Fixed ferrouranium plate not being castable
-* Fixed bayonet not rendering properly in third person
-* Fixed xenon poison gauge in the RBMK control panel not showing up on columns (oops)
-* Fixed hitscan projectiles colliding with dead mobs
-* Fixed GL state leak caused by blocks with a look overlay
-* Fixed issues with the new crate functionality
-* Fixed dupe regarding the toolbox
-* Fixed dummies with no OC components taking up a ton of component slots
-* Fixed infested glyphids spawning maggots also on the clientside, creating unkillable ghosts
+* Fixed QMAW not working at all
+* Potentially fixed a bug where proxy tile entities would reference unloaded core tile entities which would cause bizarre item voiding/duping issues in rare cases
+* Fixed fusion reactor automation being able to remove items other than the breeding output slot
+* Fixed chunkloading transport drones getting stuck due to off-by-one rounding errors
+* Fixed shift-click handling on the electric arc furnace not working with upgrades, and putting electrodes in the wrong slot
+* Fixed issue with the load order where custom fluids wouldn't work properly for fluid loading/unloading and in custom recipes
+* Fixed balefire bomb not rendering the egg when fully loaded
