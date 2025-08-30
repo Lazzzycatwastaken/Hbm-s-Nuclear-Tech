@@ -76,6 +76,10 @@ public class StructureManager {
 	public static final NBTStructure dead_dish_big = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/dead_dish_big.nbt"));
 	public static final NBTStructure dead_dish_small = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/dead_dish_small.nbt"));
 
+	public static final NBTStructure plane1 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/crashed_plane_1.nbt"));
+	public static final NBTStructure plane2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/crashed_plane_2.nbt"));
+
+
 	public static final NBTStructure spire = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/spire.nbt"));
 
 	// public static final NBTStructure test_rot = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/test-rot.nbt"));

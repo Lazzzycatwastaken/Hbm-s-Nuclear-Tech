@@ -103,8 +103,6 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 8;
 		}});
 
-		NBTStructure.registerNullWeight(0, 2, oceanBiomes::contains); //why the fuck did this change
-
 		NBTStructure.registerStructure(0, new SpawnCondition("dish") {{
 			canSpawn = biome -> biome == BiomeGenBase.plains;
 			structure = new JigsawPiece("dish", StructureManager.dish, -10);
@@ -174,6 +172,18 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			canSpawn = biome -> biome == BiomeGenBase.desert;
 			structure = new JigsawPiece("dead_dish_small", StructureManager.dead_dish_small, -5);
 			spawnWeight = 12;
+		}});
+
+		NBTStructure.registerStructure(0, new SpawnCondition("plane1") {{
+			canSpawn = biome -> biome == BiomeGenBase.forest || biome == BiomeGenBase.plains;
+			structure = new JigsawPiece("crashed_plane_1", StructureManager.plane1, -5);
+			spawnWeight = 50;
+		}});
+
+		NBTStructure.registerStructure(0, new SpawnCondition("plane2") {{
+			canSpawn = biome -> biome == BiomeGenBase.forest || biome == BiomeGenBase.plains;
+			structure = new JigsawPiece("crashed_plane_2", StructureManager.plane2, -8);
+			spawnWeight = 50;
 		}});
 
 		NBTStructure.registerNullWeight(0, 2, biome -> biome == BiomeGenBase.plains);
