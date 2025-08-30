@@ -1,8 +1,8 @@
 package com.hbm.blocks.machine;
 
 import com.hbm.tileentity.machine.TileEntityCharger;
-import com.hbm.world.gen.INBTTransformable;
 
+import com.hbm.world.gen.nbt.INBTBlockTransformable;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,7 +13,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class Charger extends BlockContainer implements INBTTransformable {
+public class Charger extends BlockContainer implements INBTBlockTransformable {
 
 	public Charger(Material mat) {
 		super(mat);
@@ -79,6 +79,6 @@ public class Charger extends BlockContainer implements INBTTransformable {
 
 	@Override
 	public int transformMeta(int meta, int coordBaseMode) {
-		return INBTTransformable.transformMetaDeco(meta, coordBaseMode);
+		return INBTBlockTransformable.transformMetaDeco(meta, coordBaseMode);
 	}
 }

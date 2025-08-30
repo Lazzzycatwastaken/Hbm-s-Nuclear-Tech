@@ -51,9 +51,6 @@ public class StructureManager {
 	public static final NBTStructure meteor_dragon_crate_crab = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/meteor/room10/headloot/loot-crate-crab.nbt"));
 	public static final NBTStructure meteor_dragon_fallback = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/meteor/room10/headloot/loot-fallback.nbt"));
 
-
-
-
 	public static final NBTStructure vertibird = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/vertibird.nbt"));
 	public static final NBTStructure crashed_vertibird = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/crashed-vertibird.nbt"));
 	public static final NBTStructure aircraft_carrier = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/aircraft_carrier.nbt"));
