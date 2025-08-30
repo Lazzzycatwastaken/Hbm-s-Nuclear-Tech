@@ -164,8 +164,20 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 35;
 		}});
 
+		NBTStructure.registerStructure(0, new SpawnCondition("dead_dish_big") {{
+			canSpawn = biome -> biome == BiomeGenBase.desert;
+			structure = new JigsawPiece("dead_dish_big", StructureManager.dead_dish_big, -17);
+			spawnWeight = 6;
+		}});
+
+		NBTStructure.registerStructure(0, new SpawnCondition("dead_dish_small") {{
+			canSpawn = biome -> biome == BiomeGenBase.desert;
+			structure = new JigsawPiece("dead_dish_small", StructureManager.dead_dish_small, -5);
+			spawnWeight = 12;
+		}});
+
 		NBTStructure.registerNullWeight(0, 2, biome -> biome == BiomeGenBase.plains);
-		NBTStructure.registerNullWeight(0, 2, oceanBiomes::contains);
+		NBTStructure.registerNullWeight(0, 4, oceanBiomes::contains);
 
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
 			put(ModBlocks.meteor_brick, new MeteorBricks());
