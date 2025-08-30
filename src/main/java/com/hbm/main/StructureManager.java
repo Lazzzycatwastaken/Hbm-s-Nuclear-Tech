@@ -84,6 +84,8 @@ public class StructureManager {
 	public static final NBTStructure desert_shack_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/desert_shack_2.nbt"));
 	public static final NBTStructure desert_shack_3 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/desert_shack_3.nbt"));
 
+	public static final NBTStructure forest_chem = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/forest_chem.nbt"));
+
 	public static final NBTStructure spire = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/spire.nbt"));
 
 	// public static final NBTStructure test_rot = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/test-rot.nbt"));

@@ -214,7 +214,14 @@ public class NTMWorldGenerator implements IWorldGenerator {
 		}});
 
 		NBTStructure.registerNullWeight(0, 4, oceanBiomes::contains);
+		NBTStructure.registerStructure(0, new SpawnCondition("forestchem") {{
+			canSpawn = biome -> biome == BiomeGenBase.forest;
+			structure = new JigsawPiece("forest_chem", StructureManager.forest_chem, -9);
+			spawnWeight = 50;
+		}});
+
 		NBTStructure.registerNullWeight(0, 2, biome -> biome == BiomeGenBase.plains);
+		NBTStructure.registerNullWeight(0, 4, oceanBiomes::contains);
 
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
 			put(ModBlocks.meteor_brick, new MeteorBricks());
