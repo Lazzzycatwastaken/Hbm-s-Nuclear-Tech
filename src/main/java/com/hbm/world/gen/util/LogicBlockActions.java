@@ -112,8 +112,8 @@ public class LogicBlockActions {
 				}
 			}
 		}
-		world.setBlock(x, y, z, ModBlocks.block_steel);
-
+		world.setBlock(x, y, z, Blocks.air);
+//		world.setBlock(x, y, z, ModBlocks.block_steel); this is useless
 	};
 
 	public static Consumer<LogicBlock.TileEntityLogicBlock> FODDER_WAVE = (tile) -> {
@@ -146,6 +146,7 @@ public class LogicBlockActions {
 			mob.setPositionAndRotation(x, y, z, 0, 0);
 			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolGunsTier1, new Random());
 			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolMasks, new Random());
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolRanged, new Random());
 			world.spawnEntityInWorld(mob);
 			world.setBlock(x, y, z, Blocks.air);
 		}
@@ -162,6 +163,7 @@ public class LogicBlockActions {
 			mob.setPositionAndRotation(x, y, z, 0, 0);
 			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolGunsTier2, new Random());
 			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolMasks, new Random());
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolTierArmor, new Random());
 			world.spawnEntityInWorld(mob);
 			world.setBlock(x, y, z, Blocks.air);
 		}
@@ -178,6 +180,39 @@ public class LogicBlockActions {
 			mob.setPositionAndRotation(x, y, z, 0, 0);
 			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolGunsTier3, new Random());
 			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolMasks, new Random());
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolAdvRanged, new Random());
+			world.spawnEntityInWorld(mob);
+			world.setBlock(x, y, z, Blocks.air);
+		}
+	};
+
+	public static Consumer<LogicBlock.TileEntityLogicBlock> ZOMBIE_TIER_1 = (tile) -> {
+		World world = tile.getWorldObj();
+		int x = tile.xCoord;
+		int y = tile.yCoord;
+		int z = tile.zCoord;
+		if (tile.phase == 1) {
+			Vec3NT vec = new Vec3NT(0, 0, 0);
+			EntityZombie mob = new EntityZombie(world);
+			mob.setPositionAndRotation(x, y, z, 0, 0);
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolMelee, new Random());
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolTierArmor, new Random());
+			world.spawnEntityInWorld(mob);
+			world.setBlock(x, y, z, Blocks.air);
+		}
+	};
+
+	public static Consumer<LogicBlock.TileEntityLogicBlock> ZOMBIE_TIER_2 = (tile) -> {
+		World world = tile.getWorldObj();
+		int x = tile.xCoord;
+		int y = tile.yCoord;
+		int z = tile.zCoord;
+		if (tile.phase == 1) {
+			Vec3NT vec = new Vec3NT(0, 0, 0);
+			EntityZombie mob = new EntityZombie(world);
+			mob.setPositionAndRotation(x, y, z, 0, 0);
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolTierArmor, new Random());
+			MobUtil.assignItemsToEntity(mob, MobUtil.slotPoolMelee, new Random());
 			world.spawnEntityInWorld(mob);
 			world.setBlock(x, y, z, Blocks.air);
 		}
@@ -315,6 +350,9 @@ public class LogicBlockActions {
 		actions.put("SKELETON_GUN_TIER_1", SKELETON_GUN_TIER_1);
 		actions.put("SKELETON_GUN_TIER_2", SKELETON_GUN_TIER_2);
 		actions.put("SKELETON_GUN_TIER_3", SKELETON_GUN_TIER_3);
+
+		actions.put("ZOMBIE_TIER_1", ZOMBIE_TIER_1);
+		actions.put("ZOMBIE_TIER_2", ZOMBIE_TIER_2);
 	}
 
 }

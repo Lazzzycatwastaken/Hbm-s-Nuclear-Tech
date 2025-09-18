@@ -7,7 +7,7 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import com.hbm.lib.RefStrings;
 
-import com.hbm.world.gen.INBTTransformable;
+import com.hbm.world.gen.nbt.INBTBlockTransformable;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,7 +21,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockChain extends Block implements INBTTransformable {
+public class BlockChain extends Block implements INBTBlockTransformable {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon iconEnd;
@@ -208,6 +208,6 @@ public class BlockChain extends Block implements INBTTransformable {
 		if (coordBaseMode == 0) return meta;
 		if (meta == 0) return meta;
 		if (meta == 1) return meta;
-		return INBTTransformable.transformMetaDeco(meta, coordBaseMode);
+		return INBTBlockTransformable.transformMetaDeco(meta, coordBaseMode);
 	}
 }

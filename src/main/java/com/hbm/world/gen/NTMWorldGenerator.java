@@ -43,7 +43,7 @@ public class NTMWorldGenerator implements IWorldGenerator {
 		final List<BiomeGenBase> flatbiomes = Arrays.asList(new BiomeGenBase[] { BiomeGenBase.plains, BiomeGenBase.icePlains, BiomeGenBase.desert });
 
 		/// SPIRE ///
-		NBTStructure.registerStructure(0, new SpawnCondition() {{
+		NBTStructure.registerStructure(0, new SpawnCondition("spire") {{
 			canSpawn = biome -> biome.heightVariation <= 0.05F && !invalidBiomes.contains(biome);
 			structure = new JigsawPiece("spire", StructureManager.spire, -1);
 			spawnWeight = 2;
@@ -112,10 +112,10 @@ public class NTMWorldGenerator implements IWorldGenerator {
 			spawnWeight = 4;
 		}});
 
-		NBTStructure.registerStructure(0, new SpawnCondition() {{
+		NBTStructure.registerStructure(0, new SpawnCondition("factory") {{
 			canSpawn = flatbiomes::contains;
 			structure = new JigsawPiece("factory", StructureManager.factory, -10);
-			spawnWeight = 46;
+			spawnWeight = 35;
 		}});
 
 		NBTStructure.registerStructure(0, new SpawnCondition("forestchem") {{

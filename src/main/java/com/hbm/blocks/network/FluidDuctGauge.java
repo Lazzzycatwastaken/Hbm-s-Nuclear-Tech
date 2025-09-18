@@ -13,7 +13,7 @@ import com.hbm.render.block.RenderBlockMultipass;
 import com.hbm.tileentity.network.TileEntityPipeBaseNT;
 import com.hbm.util.i18n.I18nUtil;
 
-import com.hbm.world.gen.INBTTransformable;
+import com.hbm.world.gen.nbt.INBTBlockTransformable;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, INBTTransformable, ILookOverlay, ITooltipProvider {
+public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, INBTBlockTransformable, ILookOverlay, ITooltipProvider {
 
 	@SideOnly(Side.CLIENT) protected IIcon overlay;
 	@SideOnly(Side.CLIENT) protected IIcon overlayGauge;
@@ -111,7 +111,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IN
 
 	@Override
 	public int transformMeta(int meta, int coordBaseMode) {
-		return INBTTransformable.transformMetaDeco(meta, coordBaseMode);
+		return INBTBlockTransformable.transformMetaDeco(meta, coordBaseMode);
 	}
 
 	@Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
