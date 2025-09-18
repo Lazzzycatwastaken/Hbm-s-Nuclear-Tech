@@ -10,11 +10,14 @@ import com.hbm.inventory.container.ContainerMachineChemicalFactory;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.gui.GUIMachineChemicalFactory;
+import com.hbm.inventory.recipes.ChemicalPlantRecipes;
+import com.hbm.inventory.recipes.loader.GenericRecipe;
+import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
-import com.hbm.module.ModuleMachineChemplant;
+import com.hbm.module.machine.ModuleMachineChemplant;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.IUpgradeInfoProvider;
@@ -48,7 +51,7 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 	public FluidTank lps;
 	
 	public long power;
-	public long maxPower = 10_000_000;
+	public long maxPower = 1_000_000;
 	public boolean[] didProcess = new boolean[4];
 	
 	public boolean frame = false;
@@ -95,12 +98,14 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 		if(i >= 15 && i <= 17) return true;
 		if(i >= 22 && i <= 24) return true;
 		if(i >= 29 && i <= 31) return true;
+		for(int k = 0; k < 4; k++) if(this.chemplantModule[k].isSlotClogged(i)) return true;
 		return false;
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 		if(slot == 0) return true; // battery
+		for(int i = 0; i < 4; i++) if(slot == 4 + i * 7 && stack.getItem() == ModItems.blueprints) return true;
 		if(slot >= 1 && slot <= 3 && stack.getItem() instanceof ItemMachineUpgrade) return true; // upgrades
 		for(int i = 0; i < 4; i++) if(this.chemplantModule[i].isItemValid(slot, stack)) return true; // recipe input crap
 		return false;
@@ -128,16 +133,18 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 		
 		if(!worldObj.isRemote) {
 			
+			long nextMaxPower = 0;
+			for(int i = 0; i < 4; i++) {
+				GenericRecipe recipe = ChemicalPlantRecipes.INSTANCE.recipeNameMap.get(chemplantModule[i].recipe);
+				if(recipe != null) {
+					nextMaxPower += recipe.power * 100;
+				}
+			}
+			this.maxPower = nextMaxPower;
+			this.maxPower = BobMathUtil.max(this.power, this.maxPower, 1_000_000);
+			
 			this.power = Library.chargeTEFromItems(slots, 0, power, maxPower);
 			upgradeManager.checkSlots(slots, 1, 3);
-
-			inputTanks[0].loadTank(10, 13, slots);
-			inputTanks[1].loadTank(11, 14, slots);
-			inputTanks[2].loadTank(12, 15, slots);
-
-			outputTanks[0].unloadTank(16, 19, slots);
-			outputTanks[1].unloadTank(17, 20, slots);
-			outputTanks[2].unloadTank(18, 21, slots);
 			
 			for(DirPos pos : getConPos()) {
 				this.trySubscribe(worldObj, pos);
@@ -163,7 +170,7 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 			boolean markDirty = false;
 			
 			for(int i = 0; i < 4; i++) {
-				this.chemplantModule[i].update(speed * 2D, pow * 2D, canCool());
+				this.chemplantModule[i].update(speed * 2D, pow * 2D, canCool(), slots[4 + i * 7]);
 				this.didProcess[i] =  this.chemplantModule[i].didProcess;
 				markDirty |= this.chemplantModule[i].markDirty;
 				
@@ -173,6 +180,7 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 				}
 			}
 			
+			// internal fluid sharing logic
 			for(FluidTank in : inputTanks) if(in.getTankType() != Fluids.NONE) for(FluidTank out : outputTanks) { // up to 144 iterations, but most of them are NOP anyway
 				if(out.getTankType() == Fluids.NONE) continue;
 				if(out.getTankType() != in.getTankType()) continue;
@@ -314,6 +322,9 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 		for(int i = 0; i < inputTanks.length; i++) this.inputTanks[i].readFromNBT(nbt, "i" + i);
 		for(int i = 0; i < outputTanks.length; i++) this.outputTanks[i].readFromNBT(nbt, "i" + i);
 
+		this.water.readFromNBT(nbt, "w");
+		this.lps.readFromNBT(nbt, "s");
+
 		this.power = nbt.getLong("power");
 		this.maxPower = nbt.getLong("maxPower");
 		for(int i = 0; i < 4; i++) this.chemplantModule[i].readFromNBT(nbt);
@@ -325,6 +336,9 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 
 		for(int i = 0; i < inputTanks.length; i++) this.inputTanks[i].writeToNBT(nbt, "i" + i);
 		for(int i = 0; i < outputTanks.length; i++) this.outputTanks[i].writeToNBT(nbt, "i" + i);
+
+		this.water.writeToNBT(nbt, "w");
+		this.lps.writeToNBT(nbt, "s");
 
 		nbt.setLong("power", power);
 		nbt.setLong("maxPower", maxPower);
@@ -377,7 +391,7 @@ public class TileEntityMachineChemicalFactory extends TileEntityMachineBase impl
 
 	@Override
 	public void provideInfo(UpgradeType type, int level, List<String> info, boolean extendedInfo) {
-		info.add(IUpgradeInfoProvider.getStandardLabel(ModBlocks.machine_chemical_plant));
+		info.add(IUpgradeInfoProvider.getStandardLabel(ModBlocks.machine_chemical_factory));
 		if(type == UpgradeType.SPEED) {
 			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(KEY_SPEED, "+" + (level * 100 / 3) + "%"));
 			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey(KEY_CONSUMPTION, "+" + (level * 50) + "%"));
