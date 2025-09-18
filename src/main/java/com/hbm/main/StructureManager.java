@@ -51,8 +51,35 @@ public class StructureManager {
 	public static final NBTStructure meteor_dragon_crate_crab = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/meteor/room10/headloot/loot-crate-crab.nbt"));
 	public static final NBTStructure meteor_dragon_fallback = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/meteor/room10/headloot/loot-fallback.nbt"));
 
-
-
+	// DESERT ATOM
+	public static final NBTStructure desert_atom = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/desert_atom.nbt"));
+	public static final NBTStructure boiler_big_1 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/boiler_big_1.nbt"));
+	public static final NBTStructure boiler_big_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/boiler_big_2.nbt"));
+	public static final NBTStructure boiler_big_3 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/boiler_big_3.nbt"));
+	public static final NBTStructure boiler_room = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/pump_room.nbt"));
+	public static final NBTStructure boiler_room_wall = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/boiler_room_wall.nbt"));
+	public static final NBTStructure diesel_gen_1 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/diesel_gen_1.nbt"));
+	public static final NBTStructure diesel_gen_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/diesel_gen_2.nbt"));
+	public static final NBTStructure diesel_gen_3 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/diesel_gen_3.nbt"));
+	public static final NBTStructure diesel_gen_room = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/diesel_gen_room.nbt"));
+	public static final NBTStructure diesel_gen_wall = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/diesel_gen_wall.nbt"));
+	public static final NBTStructure rack_1 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_1.nbt"));
+	public static final NBTStructure rack_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_2.nbt"));
+	public static final NBTStructure rack_3 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_3.nbt"));
+	public static final NBTStructure rack_4 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_4.nbt"));
+	public static final NBTStructure rack_5 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_5.nbt"));
+	public static final NBTStructure rack_6 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_6.nbt"));
+	public static final NBTStructure rack_small_1 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_1.nbt"));
+	public static final NBTStructure rack_small_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_2.nbt"));
+	public static final NBTStructure rack_small_3 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_3.nbt"));
+	public static final NBTStructure rack_small_4 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_4.nbt"));
+	public static final NBTStructure rack_small_5 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_5.nbt"));
+	public static final NBTStructure rack_small_6 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_6.nbt"));
+	public static final NBTStructure rack_small_7 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/rack_small_7.nbt"));
+	public static final NBTStructure hallway = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/hallway.nbt"));
+	public static final NBTStructure hallway_2 = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/hallway_2.nbt"));
+	public static final NBTStructure hallway_storage = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/hallway_storage.nbt"));
+	public static final NBTStructure industrial_boiler_room = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/atom/industrial_boiler_room.nbt"));
 
 	public static final NBTStructure vertibird = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/vertibird.nbt"));
 	public static final NBTStructure crashed_vertibird = new NBTStructure(new ResourceLocation(RefStrings.MODID, "structures/crashed-vertibird.nbt"));
