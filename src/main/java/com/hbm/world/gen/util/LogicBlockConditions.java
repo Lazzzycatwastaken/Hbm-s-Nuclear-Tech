@@ -81,24 +81,20 @@ public class LogicBlockConditions {
 		int y = tile.yCoord;
 		int z = tile.zCoord;
 
-		// Only check every 20 ticks (1 second) to avoid performance issues
 		if (world.getTotalWorldTime() % 20 != 0) {
-			return tile.phase > 0; // Return previous state if not time to check
+			return tile.phase > 0;
 		}
 
 		if (!world.isRaining()) {
 			return false;
 		}
 
-		// Check if there are players within 32 blocks above ground
 		AxisAlignedBB playerCheckBox = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).expand(32, 32, 32);
 		boolean hasPlayerNearby = !world.getEntitiesWithinAABB(EntityPlayer.class, playerCheckBox).isEmpty();
 
-		// Additional rain conditions: can lightning strike here, biome has sufficient rainfall
 		boolean canRainHere = world.canLightningStrikeAt(x, y + 1, z) &&
 			world.getBiomeGenForCoords(x, z).getFloatRainfall() > 0.2f;
 
-		// Check if there are NO players in the underground area (y - 2)
 		AxisAlignedBB undergroundCheckBox = AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y - 2, z + 1).expand(32, 32, 32);
 		boolean noPlayersUnderground = world.getEntitiesWithinAABB(EntityPlayer.class, undergroundCheckBox).isEmpty();
 
