@@ -7,8 +7,14 @@ import com.hbm.blocks.generic.LogicBlock;
 import com.hbm.entity.item.EntityFallingBlockNT;
 import com.hbm.entity.missile.EntityMissileTier2;
 import com.hbm.entity.mob.EntityUndeadSoldier;
+import com.hbm.explosion.vanillant.ExplosionVNT;
+import com.hbm.explosion.vanillant.standard.BlockAllocatorStandard;
+import com.hbm.explosion.vanillant.standard.BlockProcessorStandard;
+import com.hbm.explosion.vanillant.standard.EntityProcessorStandard;
+import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
 import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
+import com.hbm.particle.helper.ExplosionCreator;
 import com.hbm.tileentity.TileEntityDoorGeneric;
 import com.hbm.tileentity.machine.storage.TileEntityCrateBase;
 import com.hbm.util.ContaminationUtil;
@@ -166,6 +172,40 @@ public class LogicBlockActions {
 				vec.rotateAroundYDeg(36D);
 			}
 			world.setBlock(x, y, z, ModBlocks.block_steel);
+		}
+	};
+
+	public static Consumer<LogicBlock.TileEntityLogicBlock> LIGHTNING_STRIKE = (tile) -> {
+		World world = tile.getWorldObj();
+		int x = tile.xCoord;
+		int y = tile.yCoord;
+		int z = tile.zCoord;
+
+		if(world.isRaining() && world.isThundering()) {
+			if(tile.phase == 1) {
+				EntityLightningBolt lightning = new EntityLightningBolt(world, x + 0.5, y, z + 0.5);
+				world.addWeatherEffect(lightning);
+
+				world.setBlockToAir(x, y, z);
+			}
+		}
+	};
+
+	public static Consumer<LogicBlock.TileEntityLogicBlock> FUCKING_EXPLODE = (tile) -> {
+		World world = tile.getWorldObj();
+		int x = tile.xCoord;
+		int y = tile.yCoord;
+		int z = tile.zCoord;
+
+		if (tile.phase == 1 && !world.isRemote) {
+			world.setBlockToAir(x, y, z);
+			ExplosionVNT xnt = new ExplosionVNT(world, x + 0.5, y + 0.5, z + 0.5, 15F);
+			xnt.setBlockAllocator(new BlockAllocatorStandard(32));
+			xnt.setBlockProcessor(new BlockProcessorStandard().setNoDrop());
+			xnt.setEntityProcessor(new EntityProcessorStandard());
+			xnt.setPlayerProcessor(new PlayerProcessorStandard());
+			xnt.explode();
+			ExplosionCreator.composeEffectSmall(world, x + 0.5, y + 1, z + 0.5);
 		}
 	};
 
@@ -380,6 +420,7 @@ public class LogicBlockActions {
 		actions.put("PUZZLE_TEST", PUZZLE_TEST);
 		actions.put("MISSILE_STRIKE", MISSILE_STRIKE);
 		actions.put("IRRADIATE_ENTITIES_AOE", RAD_CONTAINMENT_SYSTEM);
+		actions.put("LIGHTNING_STRIKE", LIGHTNING_STRIKE);
 
 		//Mob Block Actions
 		actions.put("SKELETON_GUN_TIER_1", SKELETON_GUN_TIER_1);
