@@ -5,6 +5,7 @@ import com.hbm.interfaces.IControlReceiver;
 import com.hbm.inventory.container.ContainerCraneInserter;
 import com.hbm.inventory.gui.GUICraneInserter;
 import com.hbm.tileentity.IGUIProvider;
+import com.hbm.util.Compat;
 import com.hbm.util.InventoryUtil;
 
 import cpw.mods.fml.relauncher.Side;
@@ -40,48 +41,53 @@ public class TileEntityCraneInserter extends TileEntityCraneBase implements IGUI
 		super.updateEntity();
 		if(!worldObj.isRemote) {
 
-			ForgeDirection outputSide = getOutputSide();
-			TileEntity te = worldObj.getTileEntity(xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
-			
-			int[] access = null;
-			
-			if(te instanceof ISidedInventory) {
-				ISidedInventory sided = (ISidedInventory) te;
-				//access = sided.getAccessibleSlotsFromSide(dir.ordinal());
-				access = InventoryUtil.masquerade(sided, outputSide.getOpposite().ordinal());
-			}
-			
-			if(te instanceof IInventory) {
-				for(int i = 0; i < slots.length; i++) {
-					
-					ItemStack stack = slots[i];
-					
-					if(stack != null) {
-						ItemStack ret = CraneInserter.addToInventory((IInventory) te, access, stack.copy(), outputSide.getOpposite().ordinal());
-						
-						if(ret == null || ret.stackSize != stack.stackSize) {
-							slots[i] = ret;
-							this.markDirty();
-							return;
-						}
-					}
+			if(!this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {ForgeDirection outputSide = getOutputSide();
+				TileEntity te = Compat.getTileStandard(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ);
+				
+				int[] access = null;
+				
+				if(te instanceof ISidedInventory) {
+					ISidedInventory sided = (ISidedInventory) te;
+					access = InventoryUtil.masquerade(sided, outputSide.getOpposite().ordinal());
 				}
 				
-				//if the previous operation fails, repeat but use single items instead of the whole stack instead
-				//this should fix cases where the inserter can't insert into something that has a stack size limitation
-				for(int i = 0; i < slots.length; i++) {
-					
-					ItemStack stack = slots[i];
-					
-					if(stack != null) {
-						stack = stack.copy();
-						stack.stackSize = 1;
-						ItemStack ret = CraneInserter.addToInventory((IInventory) te, access, stack.copy(), outputSide.getOpposite().ordinal());
+				boolean didSomething = false;
+				
+				if(te instanceof IInventory) {
+					for(int i = 0; i < slots.length; i++) {
 						
-						if(ret == null || ret.stackSize != stack.stackSize) {
-							this.decrStackSize(i, 1);
-							this.markDirty();
-							return;
+						ItemStack stack = slots[i];
+						
+						if(stack != null) {
+							ItemStack ret = CraneInserter.addToInventory((IInventory) te, access, stack.copy(), outputSide.getOpposite().ordinal());
+							
+							if(ret == null || ret.stackSize != stack.stackSize) {
+								slots[i] = ret;
+								this.markDirty();
+								didSomething = true;
+								break;
+							}
+						}
+					}
+					
+					//if the previous operation fails, repeat but use single items instead of the whole stack instead
+					//this should fix cases where the inserter can't insert into something that has a stack size limitation
+					if(!didSomething) for(int i = 0; i < slots.length; i++) {
+						
+						ItemStack stack = slots[i];
+						
+						if(stack != null) {
+							stack = stack.copy();
+							stack.stackSize = 1;
+							
+							ItemStack ret = CraneInserter.addToInventory((IInventory) te, access, stack.copy(), outputSide.getOpposite().ordinal());
+							
+							if(ret == null || ret.stackSize != stack.stackSize) {
+								this.decrStackSize(i, 1);
+								this.markDirty();
+								didSomething = true;
+								break;
+							}
 						}
 					}
 				}

@@ -15,6 +15,7 @@ import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.recipes.loader.SerializableRecipe;
+import com.hbm.items.ItemEnums.EnumChunkType;
 import com.hbm.items.ItemEnums.EnumSecretType;
 import com.hbm.items.food.ItemConserve.EnumFoodType;
 import com.hbm.items.ModItems;
@@ -55,6 +56,16 @@ public class PedestalRecipes extends SerializableRecipe {
 				new ComparableStack(ModItems.scrap_nuclear),	new ComparableStack(ModItems.gun_heavy_revolver),	new ComparableStack(ModItems.scrap_nuclear),
 				new ComparableStack(ModBlocks.chain, 16),		new OreDictStack(CINNABAR.gem()),					new ComparableStack(ModBlocks.chain, 16)));
 
+		register(new PedestalRecipe(new ItemStack(ModItems.gun_amat_subtlety),
+				new OreDictStack(STAR.ingot()),		new OreDictStack(AL.plateCast()),		new OreDictStack(STAR.ingot()),
+				new OreDictStack(AL.plateCast()),	new ComparableStack(ModItems.gun_amat),	new OreDictStack(AL.plateCast()),
+				new OreDictStack(STAR.ingot()),		new OreDictStack(AL.plateCast()),		new OreDictStack(STAR.ingot())));
+
+		register(new PedestalRecipe(new ItemStack(ModItems.gun_amat_penance),
+				new OreDictStack(STAR.ingot()),													new OreDictStack(DURA.plateCast()),		new OreDictStack(STAR.ingot()),
+				new ComparableStack(ModItems.weapon_mod_special, 1, EnumModSpecial.SILENCER),	new ComparableStack(ModItems.gun_amat),	new ComparableStack(ModItems.weapon_mod_special, 1, EnumModSpecial.FURNITURE_BLACK),
+				new OreDictStack(STAR.ingot()),													new OreDictStack(DURA.plateCast()),		new OreDictStack(STAR.ingot())));
+
 		register(new PedestalRecipe(new ItemStack(ModItems.gun_flamer_daybreaker),
 				new OreDictStack(GOLD.plateCast()),	new ComparableStack(ModItems.canned_conserve, 1, EnumFoodType.JIZZ),	new OreDictStack(GOLD.plateCast()),
 				new OreDictStack(P_WHITE.ingot()),	new ComparableStack(ModItems.gun_flamer),								new OreDictStack(P_WHITE.ingot()),
@@ -62,9 +73,9 @@ public class PedestalRecipes extends SerializableRecipe {
 				.extra(PedestalExtraCondition.SUN));
 
 		register(new PedestalRecipe(new ItemStack(ModItems.gun_autoshotgun_sexy),
-				new ComparableStack(ModItems.bolt_spike, 16),	new OreDictStack(STAR.ingot(), 4),				new ComparableStack(ModItems.bolt_spike, 16),
+				new ComparableStack(ModItems.bolt_spike, 16),	new ComparableStack(ModItems.wild_p),			new ComparableStack(ModItems.bolt_spike, 16),
 				new ComparableStack(ModItems.card_qos),			new ComparableStack(ModItems.gun_autoshotgun),	new ComparableStack(ModItems.card_aos),
-				new ComparableStack(ModItems.bolt_spike, 16),	new OreDictStack(STAR.ingot(), 4),				new ComparableStack(ModItems.bolt_spike, 16)));
+				new ComparableStack(ModItems.bolt_spike, 16),	new OreDictStack(STAR.ingot(), 16),				new ComparableStack(ModItems.bolt_spike, 16)));
 
 		register(new PedestalRecipe(new ItemStack(ModItems.gun_minigun_lacunae),
 				null,																			new ComparableStack(ModItems.powder_magic, 4),	null,
@@ -94,9 +105,9 @@ public class PedestalRecipes extends SerializableRecipe {
 				.extra(PedestalExtraCondition.GOOD_KARMA).set(1));
 
 		register(new PedestalRecipe(new ItemStack(ModItems.ammo_secret, 1, EnumAmmoSecret.FOLLY_SM.ordinal()),
-				new OreDictStack(STAR.ingot(), 1),			new ComparableStack(ModItems.powder_magic),	new OreDictStack(STAR.ingot(), 1),
-				new ComparableStack(ModItems.powder_magic),	new ComparableStack(ModBlocks.moon_turf),	new ComparableStack(ModItems.powder_magic),
-				new OreDictStack(STAR.ingot(), 1),			new ComparableStack(ModItems.powder_magic),	new OreDictStack(STAR.ingot(), 1))
+				new OreDictStack(STAR.ingot(), 1),			new ComparableStack(ModItems.powder_magic),								new OreDictStack(STAR.ingot(), 1),
+				new ComparableStack(ModItems.powder_magic),	new ComparableStack(ModItems.chunk_ore, 1, EnumChunkType.MOONSTONE),	new ComparableStack(ModItems.powder_magic),
+				new OreDictStack(STAR.ingot(), 1),			new ComparableStack(ModItems.powder_magic),								new OreDictStack(STAR.ingot(), 1))
 				.extra(PedestalExtraCondition.FULL_MOON).set(1));
 		register(new PedestalRecipe(new ItemStack(ModItems.ammo_secret, 1, EnumAmmoSecret.FOLLY_NUKE.ordinal()),
 				new OreDictStack(STAR.ingot(), 1),			new ComparableStack(ModItems.powder_magic),							new OreDictStack(STAR.ingot(), 1),
@@ -106,6 +117,10 @@ public class PedestalRecipes extends SerializableRecipe {
 		register(new PedestalRecipe(new ItemStack(ModItems.ammo_secret, 5, EnumAmmoSecret.P35_800.ordinal()),
 				null,	null,																	null,
 				null,	new ComparableStack(ModItems.item_secret, 1, EnumSecretType.ABERRATOR),	null,
+				null,	null,																	null).set(1));
+		register(new PedestalRecipe(new ItemStack(ModItems.ammo_secret, 10, EnumAmmoSecret.P35_800_BL.ordinal()),
+				null,	null,																	null,
+				null,	new ComparableStack(ModItems.item_secret, 3, EnumSecretType.ABERRATOR),	null,
 				null,	null,																	null).set(1));
 	}
 	
@@ -157,7 +172,7 @@ public class PedestalRecipes extends SerializableRecipe {
 			rec.recipeSet = obj.get("set").getAsInt();
 		}
 		
-		this.recipes.add(rec);
+		this.register(rec);
 	}
 
 	@Override

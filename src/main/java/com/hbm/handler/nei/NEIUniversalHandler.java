@@ -23,12 +23,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+@Deprecated
 public abstract class NEIUniversalHandler extends TemplateRecipeHandler implements ICompatNHNEI {
-
-	@Override
-	public ItemStack[] getMachinesForRecipe() {
-		return machine;
-	}
 
 	public LinkedList<RecipeTransferRect> transferRectsRec = new LinkedList<RecipeTransferRect>();
 	public LinkedList<RecipeTransferRect> transferRectsGui = new LinkedList<RecipeTransferRect>();
@@ -117,6 +113,11 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler implemen
 	@Override
 	public String getRecipeName() {
 		return this.display;
+	}
+
+	@Override
+	public ItemStack[] getMachinesForRecipe() {
+		return machine;
 	}
 
 	@Override
@@ -210,7 +211,13 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler implemen
 		};
 		}
 		
-		return new int[count][2];
+		int[][] slots = new int[count][2];
+		
+		for(int i = 0; i < count; i++) {
+			slots[i] = new int[] {i % 4 * 18, i / 4 * 18};
+		}
+		
+		return slots;
 	}
 	
 	public static int[][] getOutputCoords(int count) {
@@ -258,7 +265,13 @@ public abstract class NEIUniversalHandler extends TemplateRecipeHandler implemen
 		};
 		}
 		
-		return new int[count][2];
+		int[][] slots = new int[count][2];
+		
+		for(int i = 0; i < count; i++) {
+			slots[i] = new int[] {i % 4 * 18, i / 4 * 18};
+		}
+		
+		return slots;
 	}
 
 	@Override

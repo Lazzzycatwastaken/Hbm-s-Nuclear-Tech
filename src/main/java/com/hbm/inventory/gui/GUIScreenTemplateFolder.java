@@ -10,16 +10,9 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.inventory.fluid.FluidType;
-import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.recipes.AssemblerRecipes;
-import com.hbm.inventory.recipes.AssemblerRecipes.AssemblerRecipe;
-import com.hbm.inventory.recipes.ChemplantRecipes;
-import com.hbm.inventory.recipes.ChemplantRecipes.ChemRecipe;
 import com.hbm.inventory.recipes.CrucibleRecipes;
 import com.hbm.items.ModItems;
-import com.hbm.items.machine.ItemAssemblyTemplate;
 import com.hbm.items.machine.ItemCassette;
 import com.hbm.items.machine.ItemStamp;
 import com.hbm.items.machine.ItemStamp.StampType;
@@ -74,31 +67,9 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 			for(int i = 1; i < ItemCassette.TrackType.values().length; i++) {
 				allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
 			}
-			
-			// Fluid IDs
-			FluidType[] fluids = Fluids.getInNiceOrder();
-			for(int i = 1; i < fluids.length; i++) {
-				if(!fluids[i].hasNoID()) {
-					allStacks.add(new ItemStack(ModItems.fluid_identifier, 1, fluids[i].getID()));
-				}
-			}
-		}
-		
-		// Assembly Templates
-		for(int i = 0; i < AssemblerRecipes.recipeList.size(); i++) {
-			ComparableStack comp = AssemblerRecipes.recipeList.get(i);
-			AssemblerRecipe recipe = AssemblerRecipes.recipes.get(comp);
-			if(recipe != null && recipe.folders.contains(item)) {
-				allStacks.add(ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template, 1, i), comp));
-			}
 		}
 
 		if(!this.isJournal) {
-			// Chemistry Templates
-			for(int i = 0; i < ChemplantRecipes.recipes.size(); i++) {
-				ChemRecipe chem = ChemplantRecipes.recipes.get(i);
-				allStacks.add(new ItemStack(ModItems.chemistry_template, 1, chem.getId()));
-			}
 			
 			// Crucible Templates
 			for(int i = 0; i < CrucibleRecipes.recipes.size(); i++) {
@@ -135,14 +106,6 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 						stacks.add(stack);
 						continue outer;
 					}
-				}
-			}
-			
-			if(stack.getItem() == ModItems.fluid_identifier) {
-				FluidType fluid = Fluids.fromID(stack.getItemDamage());
-				
-				if(fluid.getLocalizedName().contains(sub)) {
-					stacks.add(stack);
 				}
 			}
 		}

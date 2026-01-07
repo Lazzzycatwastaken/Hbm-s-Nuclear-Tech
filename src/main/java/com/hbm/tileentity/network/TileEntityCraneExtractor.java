@@ -10,6 +10,8 @@ import com.hbm.items.ModItems;
 import com.hbm.module.ModulePatternMatcher;
 import com.hbm.tileentity.IControlReceiverFilter;
 import com.hbm.tileentity.IGUIProvider;
+import com.hbm.util.InventoryUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -29,6 +31,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGUIProvider, IControlReceiverFilter {
 	
 	public boolean isWhitelist = false;
+	public boolean maxEject = false;
 	public ModulePatternMatcher matcher;
 
 	public TileEntityCraneExtractor() {
@@ -94,54 +97,67 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 				}
 				
 				boolean hasSent = false;
+
+				IConveyorBelt belt = null;
 				
 				if(b instanceof IConveyorBelt) {
+					belt = (IConveyorBelt) b;
+				}
 					
-					IConveyorBelt belt = (IConveyorBelt) b;
+				/* try to send items from a connected inv, if present */
+				if(te instanceof IInventory) {
 					
-					/* try to send items from a connected inv, if present */
-					if(te instanceof IInventory) {
+					IInventory inv = (IInventory) te;
+					int size = access == null ? inv.getSizeInventory() : access.length;
+					
+					for(int i = 0; i < size; i++) {
+						int index = access == null ? i : access[i];
+						ItemStack stack = inv.getStackInSlot(index);
 						
-						IInventory inv = (IInventory) te;
-						int size = access == null ? inv.getSizeInventory() : access.length;
-						
-						for(int i = 0; i < size; i++) {
-							int index = access == null ? i : access[i];
-							ItemStack stack = inv.getStackInSlot(index);
+						if(stack != null && (sided == null || sided.canExtractItem(index, stack, inputSide.getOpposite().ordinal()))) {
+
+							int maxTarget = Math.min(amount, stack.getMaxStackSize());
+							if(this.maxEject && stack.stackSize < maxTarget) continue;
+							boolean match = this.matchesFilter(stack);
 							
-							if(stack != null && (sided == null || sided.canExtractItem(index, stack, inputSide.getOpposite().ordinal()))){
+							if((isWhitelist && match) || (!isWhitelist && !match)) {
+								stack = stack.copy();
+								int toSend = Math.min(amount, stack.stackSize);
 								
-								boolean match = this.matchesFilter(stack);
-								
-								if((isWhitelist && match) || (!isWhitelist && !match)) {
-									stack = stack.copy();
-									int toSend = Math.min(amount, stack.stackSize);
+								if (belt != null) {
 									inv.decrStackSize(index, toSend);
 									stack.stackSize = toSend;
-									
 									sendItem(stack, belt, outputSide);
-									hasSent = true;
-									break;
+								} else {
+									stack.stackSize = toSend;
+									ItemStack remaining = InventoryUtil.tryAddItemToInventory(this.slots, 9, 17, stack);
+									inv.decrStackSize(index, toSend - (remaining == null ? 0 : remaining.stackSize));
 								}
+								hasSent = true;
+								break;
 							}
 						}
 					}
+				}
+				
+				/* if no item has been sent, send buffered items while ignoring the filter */
+				if(!hasSent && belt != null) {
 					
-					/* if no item has been sent, send buffered items while ignoring the filter */
-					if(!hasSent) {
+					for(int i = 9; i < 18; i++) {
+						ItemStack stack = slots[i];
 						
-						for(int i = 9; i < 18; i++) {
-							ItemStack stack = slots[i];
+						if(stack != null){
+							stack = stack.copy();
+							int toSend = Math.min(amount, stack.stackSize);
 							
-							if(stack != null){
-								stack = stack.copy();
-								int toSend = Math.min(amount, stack.stackSize);
-								decrStackSize(i, toSend);
-								stack.stackSize = toSend;
-								
-								sendItem(stack, belt, outputSide);
-								break;
-							}
+							int maxTarget = Math.min(amount, stack.getMaxStackSize());
+							if(this.maxEject && stack.stackSize < maxTarget) continue;
+
+							decrStackSize(i, toSend);
+							stack.stackSize = toSend;
+							sendItem(stack, belt, outputSide);
+
+							break;
 						}
 					}
 				}
@@ -159,7 +175,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 		moving.setItemStack(stack);
 		worldObj.spawnEntityInWorld(moving);
 
-		if (belt instanceof IEnterableBlock) {
+		if(belt instanceof IEnterableBlock) {
 			IEnterableBlock enterable = (IEnterableBlock) belt;
 
 			if(enterable.canItemEnter(worldObj, xCoord + outputSide.offsetX, yCoord + outputSide.offsetY, zCoord + outputSide.offsetZ, outputSide.getOpposite(), moving)) {
@@ -173,6 +189,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
 		buf.writeBoolean(isWhitelist);
+		buf.writeBoolean(maxEject);
 		this.matcher.serialize(buf);
 	}
 	
@@ -180,6 +197,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	public void deserialize(ByteBuf buf) {
 		super.deserialize(buf);
 		isWhitelist = buf.readBoolean();
+		maxEject = buf.readBoolean();
 		this.matcher.deserialize(buf);
 	}
 	
@@ -240,6 +258,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.isWhitelist = nbt.getBoolean("isWhitelist");
+		this.maxEject = nbt.getBoolean("maxEject");
 		this.matcher.readFromNBT(nbt);
 	}
 	
@@ -247,6 +266,7 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setBoolean("isWhitelist", this.isWhitelist);
+		nbt.setBoolean("maxEject", this.maxEject);
 		this.matcher.writeToNBT(nbt);
 	}
 
@@ -260,14 +280,18 @@ public class TileEntityCraneExtractor extends TileEntityCraneBase implements IGU
 		if(data.hasKey("whitelist")) {
 			this.isWhitelist = !this.isWhitelist;
 		}
+		if(data.hasKey("maxEject")) {
+			this.maxEject = !this.maxEject;
+		}
 		if(data.hasKey("slot")){
 			setFilterContents(data);
 		}
+		this.markDirty();
 	}
 
 	@Override
 	public int[] getFilterSlots() {
-		return new int[]{0,9};
+		return new int[] {0, 9};
 	}
 }
 

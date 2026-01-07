@@ -127,7 +127,7 @@ public class BunkerComponents {
 			fillWithMetadataBlocks(world, box, 1, hpos, 4, 1, hpos, 6, ModBlocks.concrete_smooth_stairs, getStairMeta(0));
 			placeBlockAtCurrentPosition(world, ModBlocks.concrete_slab, 1, 2, hpos, 3, box);
 			placeBlockAtCurrentPosition(world, ModBlocks.concrete_smooth_stairs, getStairMeta(2), 2, hpos, 4, box);
-			placeBlockAtCurrentPosition(world, Blocks.trapdoor, getDecoModelMeta(8) >> 2, 2, hpos, 5, box);
+			placeBlockAtCurrentPosition(world, ModBlocks.trapdoor_steel, getDecoModelMeta(8) >> 2, 2, hpos, 5, box);
 			placeBlockAtCurrentPosition(world, ModBlocks.concrete_smooth_stairs, getStairMeta(3), 2, hpos, 6, box);
 			placeBlockAtCurrentPosition(world, ModBlocks.concrete_slab, 1, 2, hpos, 7, box);
 			fillWithMetadataBlocks(world, box, 3, hpos, 4, 3, hpos, 6, ModBlocks.concrete_smooth_stairs, getStairMeta(1));
@@ -884,7 +884,7 @@ public class BunkerComponents {
 			fillWithMetadataBlocks(world, box, 1, 3, 1, 1, 3, 5, ModBlocks.concrete_smooth_stairs, stairMetaW);
 			placeBlockAtCurrentPosition(world, ModBlocks.machine_transformer, 0, 1, 2, 1, box);
 			placeBlockAtCurrentPosition(world, ModBlocks.cable_diode, decoMetaN, 1, 2, 2, box);
-			placeBlockAtCurrentPosition(world, ModBlocks.machine_battery, decoMetaE, 1, 2, 3, box);
+			placeBlockAtCurrentPosition(world, ModBlocks.capacitor_copper, 0, 1, 2, 3, box);
 			placeBlockAtCurrentPosition(world, ModBlocks.deco_red_copper, 0, 1, 2, 4, box);
 			placeBlockAtCurrentPosition(world, ModBlocks.cable_switch, 0, 1, 2, 5, box);
 			//machine

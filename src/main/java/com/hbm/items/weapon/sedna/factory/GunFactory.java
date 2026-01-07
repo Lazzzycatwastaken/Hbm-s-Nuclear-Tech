@@ -68,6 +68,7 @@ public class GunFactory {
 		XFactory35800.init();
 		XFactory45.init();
 		XFactoryTool.init();
+		XFactoryDrill.init();
 		
 		ModItems.weapon_mod_test = new ItemEnumMulti(EnumModTest.class, true, true).setUnlocalizedName("weapon_mod_test").setMaxStackSize(1);
 		ModItems.weapon_mod_generic = new ItemEnumMulti(EnumModGeneric.class, true, true).setUnlocalizedName("weapon_mod_generic").setMaxStackSize(1).setCreativeTab(MainRegistry.weaponTab);
@@ -139,7 +140,7 @@ public class GunFactory {
 	public static enum EnumAmmoSecret {
 		FOLLY_SM, FOLLY_NUKE,
 		M44_EQUESTRIAN, G12_EQUESTRIAN, BMG50_EQUESTRIAN,
-		P35_800, BMG50_BLACK
+		P35_800, BMG50_BLACK, P35_800_BL
 	}
 	
 	public static enum EnumModTest {
@@ -164,7 +165,11 @@ public class GunFactory {
 		SPEEDUP, CHOKE, SPEEDLOADER,
 		FURNITURE_GREEN, FURNITURE_BLACK, BAYONET,
 		STACK_MAG, SKIN_SATURNITE, LAS_SHOTGUN,
-		LAS_CAPACITOR, LAS_AUTO
+		LAS_CAPACITOR, LAS_AUTO,
+		NICKEL, DOUBLOONS,
+		DRILL_HSS, DRILL_WEAPONSTEEL, DRILL_TCALLOY, DRILL_SATURNITE,
+		ENGINE_DIESEL, ENGINE_AVIATION, ENGINE_ELECTRIC, ENGINE_TURBO,
+		MAGNET, SIFTER, CANISTERS
 	}
 	
 	public static enum EnumModCaliber {

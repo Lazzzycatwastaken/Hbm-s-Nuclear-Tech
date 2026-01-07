@@ -17,7 +17,7 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.LootGenerator;
 import com.hbm.util.i18n.I18nUtil;
-import com.hbm.world.gen.INBTTileEntityTransformable;
+import com.hbm.world.gen.nbt.INBTTileEntityTransformable;
 import com.mojang.authlib.GameProfile;
 
 import api.hbm.block.IToolable;
@@ -33,7 +33,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -82,7 +81,7 @@ public class BlockWandLoot extends BlockContainer implements ILookOverlay, ITool
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
-        int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		if(i == 0) world.setBlockMetadataWithNotify(x, y, z, 3, 2);
 		if(i == 1) world.setBlockMetadataWithNotify(x, y, z, 2, 2);
@@ -153,17 +152,14 @@ public class BlockWandLoot extends BlockContainer implements ILookOverlay, ITool
 	}
 
 	private Block getLootableBlock(World world, ItemStack stack) {
-		if(stack == null) return null;
+		Block block = ModBlocks.getBlockFromStack(stack);
+		if(block == null) return null;
 
-		if(stack.getItem() instanceof ItemBlock) {
-			Block block = ((ItemBlock) stack.getItem()).field_150939_a;
+		if(block == ModBlocks.deco_loot) return block;
 
-			if(block == ModBlocks.deco_loot) return block;
-
-			if(block instanceof ITileEntityProvider) {
-				TileEntity te = ((ITileEntityProvider) block).createNewTileEntity(world, 12);
-				if(te instanceof IInventory) return block;
-			}
+		if(block instanceof ITileEntityProvider) {
+			TileEntity te = ((ITileEntityProvider) block).createNewTileEntity(world, 12);
+			if(te instanceof IInventory) return block;
 		}
 
 		return null;

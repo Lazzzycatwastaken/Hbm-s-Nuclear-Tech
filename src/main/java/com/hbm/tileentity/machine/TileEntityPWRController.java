@@ -12,12 +12,13 @@ import com.hbm.inventory.container.ContainerPWR;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Heatable;
-import com.hbm.inventory.fluid.trait.FT_PWRModerator;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingStep;
 import com.hbm.inventory.fluid.trait.FT_Heatable.HeatingType;
+import com.hbm.inventory.fluid.trait.FT_PWRModerator;
 import com.hbm.inventory.gui.GUIPWR;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemPWRFuel.EnumPWRFuel;
+import com.hbm.items.machine.ItemPWRPrinter;
 import com.hbm.main.MainRegistry;
 import com.hbm.sound.AudioWrapper;
 import com.hbm.tileentity.IGUIProvider;
@@ -375,8 +376,17 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 		return this.rodCount + (int) Math.ceil(this.heatsinkCount / 4D);
 	}
 
+	public boolean isPrinting;
+
 	@Override
 	public void serialize(ByteBuf buf) {
+		buf.writeBoolean(isPrinting);
+		if(isPrinting) {
+			ItemPWRPrinter.serialize(worldObj, buf);
+			isPrinting = false;
+			return;
+		}
+
 		super.serialize(buf);
 		buf.writeInt(this.rodCount);
 		buf.writeLong(this.coreHeat);
@@ -395,6 +405,14 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 
 	@Override
 	public void deserialize(ByteBuf buf) {
+		if(buf.readBoolean()) {
+			// piggybacking off of this packet so that we don't have to sync EVERY PWR
+			// block continuously to the client for one tiny screenshot tool
+
+			ItemPWRPrinter.deserialize(worldObj, buf);
+			return;
+		}
+
 		super.deserialize(buf);
 		this.rodCount = buf.readInt();
 		this.coreHeat = buf.readLong();
@@ -564,7 +582,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 	@Callback(direct = true)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getHeat(Context context, Arguments args) {
-		return new Object[] {coreHeat, hullHeat};
+		return new Object[] {coreHeat, hullHeat, coreHeatCapacity, hullHeatCapacityBase};
 	}
 
 	@Callback(direct = true)
@@ -594,7 +612,7 @@ public class TileEntityPWRController extends TileEntityMachineBase implements IG
 	@Callback(direct = true)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getInfo(Context context, Arguments args) {
-		return new Object[] {coreHeat, hullHeat, flux, rodTarget, rodLevel, amountLoaded, progress, processTime, tanks[0].getFill(), tanks[0].getMaxFill(), tanks[1].getFill(), tanks[1].getMaxFill()};
+		return new Object[] {coreHeat, hullHeat, coreHeatCapacity, hullHeatCapacityBase, flux, rodTarget, rodLevel, amountLoaded, progress, processTime, tanks[0].getFill(), tanks[0].getMaxFill(), tanks[1].getFill(), tanks[1].getMaxFill()};
 	}
 
 	@Callback(direct = true, limit = 4)
