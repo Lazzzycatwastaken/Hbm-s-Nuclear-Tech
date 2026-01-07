@@ -54,9 +54,6 @@ public class NTMWorldGenerator implements IWorldGenerator {
 
 		NBTStructure.registerStructure(0, new SpawnCondition("features") {{
 			canSpawn = biome -> !isInvalidBiome(biome);
-
-		NBTStructure.registerStructure(0, new SpawnCondition() {{
-			canSpawn = biome -> !invalidBiomes.contains(biome);
 			start = d -> new MapGenNTMFeatures.Start(d.getW(), d.getX(), d.getY(), d.getZ());
 			spawnWeight = StructureConfig.featuresSpawnWeight;
 		}});
@@ -112,8 +109,6 @@ public class NTMWorldGenerator implements IWorldGenerator {
 
 		NBTStructure.registerStructure(0, new SpawnCondition("dish") {{
 			canSpawn = biome -> BiomeDictionary.isBiomeOfType(biome, Type.PLAINS);
-		NBTStructure.registerStructure(0, new SpawnCondition() {{
-			canSpawn = biome -> biome == BiomeGenBase.plains;
 			structure = new JigsawPiece("dish", StructureManager.dish, -10);
 			minHeight = 53;
 			maxHeight = 65;
@@ -247,14 +242,12 @@ public class NTMWorldGenerator implements IWorldGenerator {
 
 		NBTStructure.registerNullWeight(0, StructureConfig.plainsNullWeight, biome -> biome == BiomeGenBase.plains);
 		NBTStructure.registerNullWeight(0, StructureConfig.oceanNullWeight, biome -> BiomeDictionary.isBiomeOfType(biome, Type.OCEAN));
-		NBTStructure.registerStructure(0, new SpawnCondition() {{
+
+		NBTStructure.registerStructure(0, new SpawnCondition("spaceship") {{
 			canSpawn = biome -> biome == BiomeGenBase.desert;
 			structure = new JigsawPiece("spaceship", StructureManager.spaceship, -2);
 			spawnWeight = 2;
 		}});
-
-
-		NBTStructure.registerNullWeight(0, 4, oceanBiomes::contains);
 
 		Map<Block, BlockSelector> bricks = new HashMap<Block, BlockSelector>() {{
 			put(ModBlocks.meteor_brick, new MeteorBricks());
